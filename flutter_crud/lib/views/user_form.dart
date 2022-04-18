@@ -5,11 +5,17 @@ import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/provider/users.dart';
 import 'package:provider/provider.dart';
 
-class UserForm extends StatelessWidget {
-  final _form = GlobalKey<FormState>();
-  final Map<String, String> _formData = {};
+class UserForm extends StatefulWidget {
+  const UserForm({Key? key}) : super(key: key);
 
-  UserForm({Key? key}) : super(key: key);
+  @override
+  _UserFormState createState() => _UserFormState();
+}
+
+class _UserFormState extends State<UserForm> {
+  final _form = GlobalKey<FormState>();
+
+  final Map<String, String> _formData = {};
 
   void _loadFormData(User user) {
     if (user != null) {
@@ -21,11 +27,15 @@ class UserForm extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     final user = ModalRoute.of(context)?.settings.arguments as User;
-
     _loadFormData(user);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulário de Usuário '),
@@ -60,7 +70,7 @@ class UserForm extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
-                initialValue: user.name,
+                initialValue: _formData['name'],
                 decoration: const InputDecoration(labelText: 'Nome'),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -75,12 +85,12 @@ class UserForm extends StatelessWidget {
                 onSaved: (value) => _formData['name'] = value!,
               ),
               TextFormField(
-                initialValue: user.email,
+                initialValue: _formData['email'],
                 decoration: const InputDecoration(labelText: 'E-mail'),
                 onSaved: (value) => _formData['email'] = value!,
               ),
               TextFormField(
-                initialValue: user.avatarUrl,
+                initialValue: _formData['avatarUrl'],
                 decoration: const InputDecoration(labelText: 'Url do Avatar'),
                 onSaved: (value) => _formData['avatarUrl'] = value!,
               ),
