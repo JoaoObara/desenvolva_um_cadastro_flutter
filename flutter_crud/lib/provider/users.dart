@@ -1,4 +1,5 @@
-import 'dart:developer';
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -21,17 +22,22 @@ class Users with ChangeNotifier {
   }
 
   void put(User user) {
-    // ignore: unnecessary_null_comparison
     if (user == null) {
       return;
     }
 
     // alterar
-    // ignore: unnecessary_null_comparison
     if (user.id != null &&
-        user.id.trim().isNotEmpty &&
+        user.id!.trim().isNotEmpty &&
         _items.containsKey(user.id)) {
-      _items.update(user.id, (_) => user);
+      _items.update(
+          user.id!,
+          (_) => User(
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                avatarUrl: user.avatarUrl,
+              ));
     } else {
       // adicionar
       final id = Random().nextDouble().toString();

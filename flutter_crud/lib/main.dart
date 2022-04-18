@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity),
         routes: {
           AppRoutes.HOME: (_) => const UserList(),
-          AppRoutes.USER_FORM: (_) => const UserForm()
+          AppRoutes.USER_FORM: (_) => UserForm()
         },
       ),
     );
