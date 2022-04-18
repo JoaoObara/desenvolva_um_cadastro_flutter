@@ -1,6 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user.dart';
+import 'package:flutter_application_1/provider/users.dart';
 import 'package:flutter_application_1/routes/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class UserTile extends StatelessWidget {
   final User user;
@@ -32,9 +36,31 @@ class UserTile extends StatelessWidget {
             color: Colors.orange,
           ),
           IconButton(
-            onPressed: () {},
             icon: const Icon(Icons.delete),
             color: Colors.red,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Excluir usuário'),
+                  content: const Text('Tem certeza?'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: const Text('Não'),
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                    FlatButton(
+                      child: const Text('Sim'),
+                      onPressed: () => Navigator.of(context).pop(true),
+                    ),
+                  ],
+                ),
+              ).then((confirmed) {
+                if (confirmed) {
+                  Provider.of<Users>(context, listen: false).remove(user);
+                }
+              });
+            },
           )
         ]),
       ),
