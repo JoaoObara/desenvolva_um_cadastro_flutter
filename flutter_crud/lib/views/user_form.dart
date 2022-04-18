@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:flutter_application_1/provider/users.dart';
@@ -9,8 +11,21 @@ class UserForm extends StatelessWidget {
 
   UserForm({Key? key}) : super(key: key);
 
+  void _loadFormData(User user) {
+    if (user != null) {
+      _formData['id'] = user.id!;
+      _formData['name'] = user.name;
+      _formData['email'] = user.email;
+      _formData['avatarUrl'] = user.avatarUrl;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = ModalRoute.of(context)?.settings.arguments as User;
+
+    _loadFormData(user);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulário de Usuário '),
@@ -45,6 +60,7 @@ class UserForm extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
+                initialValue: user.name,
                 decoration: const InputDecoration(labelText: 'Nome'),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -59,10 +75,12 @@ class UserForm extends StatelessWidget {
                 onSaved: (value) => _formData['name'] = value!,
               ),
               TextFormField(
+                initialValue: user.email,
                 decoration: const InputDecoration(labelText: 'E-mail'),
                 onSaved: (value) => _formData['email'] = value!,
               ),
               TextFormField(
+                initialValue: user.avatarUrl,
                 decoration: const InputDecoration(labelText: 'Url do Avatar'),
                 onSaved: (value) => _formData['avatarUrl'] = value!,
               ),
